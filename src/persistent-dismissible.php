@@ -51,7 +51,7 @@ class Persistent_Dismissible {
 		$prefixed_id  = $prefix . $r['id'];
 		$prefixed_eol = $prefix . $eol;
 
-		// Get return value & eol.
+		// Get return value & end-of-life.
 		$retval   = get_user_meta( $r['user_id'], $prefixed_id,  true );
 		$lifespan = get_user_meta( $r['user_id'], $prefixed_eol, true );
 
@@ -213,7 +213,7 @@ class Persistent_Dismissible {
 	 *
 	 * @since 1.0.0
 	 * @param array $args See parse_args().
-	 * @return string '_eol' appended to the ID.
+	 * @return string '_eol' appended to the ID (for its end-of-life timestamp).
 	 */
 	private static function get_eol_id( $args = array() ) {
 		return sanitize_key( $args['id'] ) . '_eol';
