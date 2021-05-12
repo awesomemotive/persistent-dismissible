@@ -97,7 +97,7 @@ class Persistent_Dismissible {
 		if ( false === get_user_meta( $r['user_id'], $prefixed_id, true ) ) {
 
 			// Add lifespan.
-			if ( ! empty( $r['life'] ) ) {
+			if ( ! empty( $lifespan ) ) {
 				add_user_meta( $r['user_id'], $prefixed_timeout, $lifespan, true );
 			}
 
