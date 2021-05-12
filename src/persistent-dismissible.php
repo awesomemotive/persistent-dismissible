@@ -245,7 +245,7 @@ class Persistent_Dismissible {
 	}
 
 	/**
-	 * Get the string used to identify the ID used to store the end-of-life.
+	 * Get the string used to identify the ID for storing the end-of-life.
 	 *
 	 * @since 1.0.0
 	 * @param array $args See parse_args().
