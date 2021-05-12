@@ -46,26 +46,26 @@ class Persistent_Dismissible {
 		}
 
 		// Get prefixed option names.
-		$timeout          = self::get_timeout_key( $r );
-		$prefix           = self::get_prefix( $r );
-		$prefixed_id      = $prefix . $r['id'];
-		$prefixed_timeout = $prefix . $timeout;
+		$eol          = self::get_eol_id( $r );
+		$prefix       = self::get_prefix( $r );
+		$prefixed_id  = $prefix . $r['id'];
+		$prefixed_eol = $prefix . $eol;
 
-		// Get return value & timeout.
-		$retval   = get_user_meta( $r['user_id'], $prefixed_id,      true );
-		$lifespan = get_user_meta( $r['user_id'], $prefixed_timeout, true );
+		// Get return value & eol.
+		$retval   = get_user_meta( $r['user_id'], $prefixed_id,  true );
+		$lifespan = get_user_meta( $r['user_id'], $prefixed_eol, true );
 
 		// Prefer false over default return value of get_user_meta()
 		if ( '' === $retval ) {
 			$retval = false;
 		}
 
-		// If expired, delete it. This needs to be inside get() because we are
-		// not relying on WP Cron for garbage collection. This mirrors behavior
-		// found inside of WordPress core.
+		// If end-of-life, delete it. This needs to be inside get() because we
+		// are not relying on WP Cron for garbage collection. This mirrors
+		// behavior found inside of WordPress core.
 		if ( ( '' !== $lifespan ) && ( $lifespan < time() ) ) {
 			delete_user_option( $r['user_id'], $r['id'], $r['global'] );
-			delete_user_option( $r['user_id'], $timeout, $r['global'] );
+			delete_user_option( $r['user_id'], $eol,     $r['global'] );
 			$retval = false;
 		}
 
@@ -92,18 +92,18 @@ class Persistent_Dismissible {
 		}
 
 		// Get lifespan and prefixed option names.
-		$lifespan         = self::get_lifespan( $r );
-		$timeout          = self::get_timeout_key( $r );
-		$prefix           = self::get_prefix( $r );
-		$prefixed_id      = $prefix . $r['id'];
-		$prefixed_timeout = $prefix . $timeout;
+		$lifespan     = self::get_lifespan( $r );
+		$eol          = self::get_eol_id( $r );
+		$prefix       = self::get_prefix( $r );
+		$prefixed_id  = $prefix . $r['id'];
+		$prefixed_eol = $prefix . $eol;
 
 		// No dismissible data, so add it.
 		if ( '' === get_user_meta( $r['user_id'], $prefixed_id, true ) ) {
 
 			// Add lifespan.
 			if ( ! empty( $lifespan ) ) {
-				add_user_meta( $r['user_id'], $prefixed_timeout, $lifespan, true );
+				add_user_meta( $r['user_id'], $prefixed_eol, $lifespan, true );
 			}
 
 			// Add dismissible data.
@@ -118,17 +118,17 @@ class Persistent_Dismissible {
 			// Dismissible to update has new lifespan.
 			if ( ! empty( $lifespan ) ) {
 
-				// If lifespan is requested but the dismissible has no timeout,
+				// If lifespan is requested but the dismissible has no end-of-life,
 				// delete them both and re-create them, to avoid race conditions.
-				if ( '' === get_user_meta( $r['user_id'], $prefixed_timeout, true ) ) {
+				if ( '' === get_user_meta( $r['user_id'], $prefixed_eol, true ) ) {
 					delete_user_option( $r['user_id'], $r['id'], $r['global'] );
-					add_user_meta( $r['user_id'], $prefixed_timeout, $lifespan, true );
+					add_user_meta( $r['user_id'], $prefixed_eol, $lifespan, true );
 					$retval = add_user_meta( $r['user_id'], $prefixed_id, $r['value'], true );
 					$update = false;
 
 				// Update the lifespan.
 				} else {
-					update_user_option( $r['user_id'], $timeout, $lifespan, $r['global'] );
+					update_user_option( $r['user_id'], $eol, $lifespan, $r['global'] );
 				}
 			}
 
@@ -159,12 +159,12 @@ class Persistent_Dismissible {
 			return false;
 		}
 
-		// Create the timeout key.
-		$timeout = self::get_timeout_key( $r );
+		// Get the end-of-life key.
+		$eol = self::get_eol_id( $r );
 
 		// Delete.
 		delete_user_option( $r['user_id'], $r['id'], $r['global'] );
-		delete_user_option( $r['user_id'], $timeout, $r['global'] );
+		delete_user_option( $r['user_id'], $eol,     $r['global'] );
 
 		// Success.
 		return true;
@@ -209,14 +209,14 @@ class Persistent_Dismissible {
 	}
 
 	/**
-	 * Get the string used to identify the key used to store the timeout.
+	 * Get the string used to identify the key used to store the end-of-life.
 	 *
 	 * @since 1.0.0
 	 * @param array $args See parse_args().
-	 * @return string '_expires' appended to the ID.
+	 * @return string '_eol' appended to the ID.
 	 */
-	private static function get_timeout_key( $args = array() ) {
-		return sanitize_key( $args['id'] ) . '_expires';
+	private static function get_eol_id( $args = array() ) {
+		return sanitize_key( $args['id'] ) . '_eol';
 	}
 
 	/**
