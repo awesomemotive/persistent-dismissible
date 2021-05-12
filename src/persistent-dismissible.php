@@ -55,6 +55,11 @@ class Persistent_Dismissible {
 		$retval   = get_user_meta( $r['user_id'], $prefixed_id,      true );
 		$lifespan = get_user_meta( $r['user_id'], $prefixed_timeout, true );
 
+		// Prefer false over default return value of get_user_meta()
+		if ( '' === $retval ) {
+			$retval = false;
+		}
+
 		// If expired, delete it. This needs to be inside get() because we are
 		// not relying on WP Cron for garbage collection. This mirrors behavior
 		// found inside of WordPress core.
