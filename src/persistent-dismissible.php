@@ -40,7 +40,7 @@ class Persistent_Dismissible {
 		// Parse arguments.
 		$r = self::parse_args( $args );
 
-		// Bail if no unique ID.
+		// Bail if invalid arguments.
 		if ( ! self::check_args( $r ) ) {
 			return false;
 		}
@@ -81,7 +81,7 @@ class Persistent_Dismissible {
 		// Parse arguments.
 		$r = self::parse_args( $args );
 
-		// Bail if no unique ID.
+		// Bail if invalid arguments.
 		if ( ! self::check_args( $r ) ) {
 			return false;
 		}
@@ -149,7 +149,7 @@ class Persistent_Dismissible {
 		// Parse arguments.
 		$r = self::parse_args( $args );
 
-		// Bail if no unique ID.
+		// Bail if invalid arguments.
 		if ( ! self::check_args( $r ) ) {
 			return false;
 		}
