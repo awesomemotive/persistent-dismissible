@@ -111,7 +111,7 @@ class Persistent_Dismissible {
 			$update = true;
 
 			// Dismissible to update has new lifespan.
-			if ( ! empty( $r['life'] ) ) {
+			if ( ! empty( $lifespan ) ) {
 
 				// If lifespan is requested but the dismissible has no timeout,
 				// delete them both and re-create them, to avoid race conditions.
