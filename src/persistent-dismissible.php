@@ -207,7 +207,7 @@ class Persistent_Dismissible {
 	 *
 	 * @since 1.0.0
 	 * @param array $args See parse_args().
-	 * @return string '_dismissible_timeout_' appended to the ID.
+	 * @return string '_expires' appended to the ID.
 	 */
 	private static function get_timeout_key( $args = array() ) {
 		return sanitize_key( $args['id'] ) . '_expires';
