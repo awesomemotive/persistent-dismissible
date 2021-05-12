@@ -86,7 +86,7 @@ class Persistent_Dismissible {
 			return false;
 		}
 
-		// Calculate lifespan, and get prefixed option names.
+		// Get lifespan and prefixed option names.
 		$lifespan         = self::get_lifespan( $r );
 		$timeout          = self::get_timeout_key( $r );
 		$prefix           = self::get_prefix( $r );
