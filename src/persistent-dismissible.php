@@ -46,18 +46,19 @@ class Persistent_Dismissible {
 		}
 
 		// Get prefixed option names.
+		$timeout          = self::get_timeout_key( $r );
 		$prefix           = self::get_prefix( $r );
 		$prefixed_id      = $prefix . $r['id'];
-		$prefixed_timeout = $prefix . self::get_timeout_key( $r );
+		$prefixed_timeout = $prefix . $timeout;
 
 		// Get return value & timeout.
-		$retval  = get_user_option( $prefixed_id,      $r['user_id'], $r['global'] );
-		$timeout = get_user_option( $prefixed_timeout, $r['user_id'], $r['global'] );
+		$retval   = get_user_meta( $r['user_id'], $prefixed_id,      true );
+		$lifespan = get_user_meta( $r['user_id'], $prefixed_timeout, true );
 
 		// If expired, delete it. This needs to be inside get() because we are
 		// not relying on WP Cron for garbage collection. This mirrors behavior
 		// found inside of WordPress core.
-		if ( ( false !== $timeout ) && ( $timeout < time() ) ) {
+		if ( ( false !== $lifespan ) && ( $lifespan < time() ) ) {
 			delete_user_option( $r['user_id'], $r['id'], $r['global'] );
 			delete_user_option( $r['user_id'], $timeout, $r['global'] );
 			$retval = false;
