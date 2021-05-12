@@ -87,7 +87,7 @@ class Persistent_Dismissible {
 		}
 
 		// Calculate lifespan, and get prefixed option names.
-		$lifespan         = time() + absint( $r['life'] );
+		$lifespan         = self::get_lifespan( $r );
 		$timeout          = self::get_timeout_key( $r );
 		$prefix           = self::get_prefix( $r );
 		$prefixed_id      = $prefix . $r['id'];
@@ -235,6 +235,19 @@ class Persistent_Dismissible {
 
 		// Return
 		return $retval;
+	}
+
+	/**
+	 * Get the lifespan for a persistent dismissible.
+	 *
+	 * @since 1.0.0
+	 * @param array $args See parse_args().
+	 * @return int
+	 */
+	private static function get_lifespan( $args = array() ) {
+		return ! empty( $args['life'] ) && is_numeric( $args['life'] )
+			? time() + absint( $args['life'] )
+			: 0;
 	}
 }
 
