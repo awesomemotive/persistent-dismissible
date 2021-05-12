@@ -46,10 +46,10 @@ class Persistent_Dismissible {
 		}
 
 		// Get prefixed option names.
-		$eol          = self::get_eol_id( $r );
+		$eol_id       = self::get_eol_id( $r );
 		$prefix       = self::get_prefix( $r );
 		$prefixed_id  = $prefix . $r['id'];
-		$prefixed_eol = $prefix . $eol;
+		$prefixed_eol = $prefix . $eol_id;
 
 		// Get return value & end-of-life.
 		$retval   = get_user_meta( $r['user_id'], $prefixed_id,  true );
@@ -63,9 +63,9 @@ class Persistent_Dismissible {
 		// If end-of-life, delete it. This needs to be inside get() because we
 		// are not relying on WP Cron for garbage collection. This mirrors
 		// behavior found inside of WordPress core.
-		if ( ( '' !== $lifespan ) && ( $lifespan < time() ) ) {
+		if ( self::is_eol( $lifespan ) ) {
 			delete_user_option( $r['user_id'], $r['id'], $r['global'] );
-			delete_user_option( $r['user_id'], $eol,     $r['global'] );
+			delete_user_option( $r['user_id'], $eol_id,  $r['global'] );
 			$retval = false;
 		}
 
@@ -93,10 +93,10 @@ class Persistent_Dismissible {
 
 		// Get lifespan and prefixed option names.
 		$lifespan     = self::get_lifespan( $r );
-		$eol          = self::get_eol_id( $r );
+		$eol_id       = self::get_eol_id( $r );
 		$prefix       = self::get_prefix( $r );
 		$prefixed_id  = $prefix . $r['id'];
-		$prefixed_eol = $prefix . $eol;
+		$prefixed_eol = $prefix . $eol_id;
 
 		// No dismissible data, so add it.
 		if ( '' === get_user_meta( $r['user_id'], $prefixed_id, true ) ) {
@@ -128,7 +128,7 @@ class Persistent_Dismissible {
 
 				// Update the lifespan.
 				} else {
-					update_user_option( $r['user_id'], $eol, $lifespan, $r['global'] );
+					update_user_option( $r['user_id'], $eol_id, $lifespan, $r['global'] );
 				}
 			}
 
@@ -160,11 +160,11 @@ class Persistent_Dismissible {
 		}
 
 		// Get the end-of-life key.
-		$eol = self::get_eol_id( $r );
+		$eol_id = self::get_eol_id( $r );
 
 		// Delete.
 		delete_user_option( $r['user_id'], $r['id'], $r['global'] );
-		delete_user_option( $r['user_id'], $eol,     $r['global'] );
+		delete_user_option( $r['user_id'], $eol_id,  $r['global'] );
 
 		// Success.
 		return true;
@@ -209,17 +209,6 @@ class Persistent_Dismissible {
 	}
 
 	/**
-	 * Get the string used to identify the key used to store the end-of-life.
-	 *
-	 * @since 1.0.0
-	 * @param array $args See parse_args().
-	 * @return string '_eol' appended to the ID (for its end-of-life timestamp).
-	 */
-	private static function get_eol_id( $args = array() ) {
-		return sanitize_key( $args['id'] ) . '_eol';
-	}
-
-	/**
 	 * Get the string used to prefix user meta for non-global dismissibles.
 	 *
 	 * @since 1.0.0
@@ -253,6 +242,28 @@ class Persistent_Dismissible {
 		return ! empty( $args['life'] ) && is_numeric( $args['life'] )
 			? time() + absint( $args['life'] )
 			: 0;
+	}
+
+	/**
+	 * Get the string used to identify the key used to store the end-of-life.
+	 *
+	 * @since 1.0.0
+	 * @param array $args See parse_args().
+	 * @return string '_eol' appended to the ID (for its end-of-life timestamp).
+	 */
+	private static function get_eol_id( $args = array() ) {
+		return sanitize_key( $args['id'] ) . '_eol';
+	}
+
+	/**
+	 * Check whether a timestamp is beyond the current time.
+	 *
+	 * @since 1.0.0
+	 * @param int $timestamp A Unix timestamp. Default 0.
+	 * @return bool True if end-of-life, false if not.
+	 */
+	private static function is_eol( $timestamp = 0 ) {
+		return is_numeric( $timestamp ) && ( $timestamp < time() );
 	}
 }
 
