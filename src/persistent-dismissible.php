@@ -159,7 +159,7 @@ class Persistent_Dismissible {
 			return false;
 		}
 
-		// Get the end-of-life key.
+		// Get the end-of-life ID.
 		$eol_id = self::get_eol_id( $r );
 
 		// Delete.
@@ -245,7 +245,7 @@ class Persistent_Dismissible {
 	}
 
 	/**
-	 * Get the string used to identify the key used to store the end-of-life.
+	 * Get the string used to identify the ID used to store the end-of-life.
 	 *
 	 * @since 1.0.0
 	 * @param array $args See parse_args().
