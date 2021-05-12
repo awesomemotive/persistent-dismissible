@@ -57,3 +57,7 @@ PD::delete( [
  * }
  */
 ```
+
+----
+
+This organization was created by (and is managed by) <a href="https://sandhillsdev.com">Sandhills Development, LLC</a>, where we aim to craft superior experiences through ingenuity, with <a href="https://sandhillsdev.com/commitments/">deep commitment</a> to (and appreciation for) the human element.
