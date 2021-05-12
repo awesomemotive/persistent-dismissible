@@ -58,7 +58,7 @@ class Persistent_Dismissible {
 		// If expired, delete it. This needs to be inside get() because we are
 		// not relying on WP Cron for garbage collection. This mirrors behavior
 		// found inside of WordPress core.
-		if ( ( false !== $lifespan ) && ( $lifespan < time() ) ) {
+		if ( ( '' !== $lifespan ) && ( $lifespan < time() ) ) {
 			delete_user_option( $r['user_id'], $r['id'], $r['global'] );
 			delete_user_option( $r['user_id'], $timeout, $r['global'] );
 			$retval = false;
@@ -94,7 +94,7 @@ class Persistent_Dismissible {
 		$prefixed_timeout = $prefix . $timeout;
 
 		// No dismissible data, so add it.
-		if ( false === get_user_meta( $r['user_id'], $prefixed_id, true ) ) {
+		if ( '' === get_user_meta( $r['user_id'], $prefixed_id, true ) ) {
 
 			// Add lifespan.
 			if ( ! empty( $lifespan ) ) {
@@ -115,7 +115,7 @@ class Persistent_Dismissible {
 
 				// If lifespan is requested but the dismissible has no timeout,
 				// delete them both and re-create them, to avoid race conditions.
-				if ( false === get_user_meta( $r['user_id'], $prefixed_timeout, true ) ) {
+				if ( '' === get_user_meta( $r['user_id'], $prefixed_timeout, true ) ) {
 					delete_user_option( $r['user_id'], $r['id'], $r['global'] );
 					add_user_meta( $r['user_id'], $prefixed_timeout, $lifespan, true );
 					$retval = add_user_meta( $r['user_id'], $prefixed_id, $r['value'], true );
