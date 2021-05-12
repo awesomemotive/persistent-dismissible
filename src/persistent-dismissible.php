@@ -37,20 +37,20 @@ class Persistent_Dismissible {
 	 */
 	public static function get( $args = array() ) {
 
-		// Parse arguments
+		// Parse arguments.
 		$r = self::parse_args( $args );
 
-		// Bail if no unique ID
+		// Bail if no unique ID.
 		if ( ! self::check_args( $r ) ) {
 			return false;
 		}
 
-		// Get prefixed option names
+		// Get prefixed option names.
 		$prefix           = self::get_prefix( $r );
 		$prefixed_id      = $prefix . $r['id'];
 		$prefixed_timeout = $prefix . self::get_timeout_key( $r );
 
-		// Get return value & timeout
+		// Get return value & timeout.
 		$retval  = get_user_option( $prefixed_id,      $r['user_id'], $r['global'] );
 		$timeout = get_user_option( $prefixed_timeout, $r['user_id'], $r['global'] );
 
@@ -63,7 +63,7 @@ class Persistent_Dismissible {
 			$retval = false;
 		}
 
-		// Return the value
+		// Return the value.
 		return $retval;
 	}
 
