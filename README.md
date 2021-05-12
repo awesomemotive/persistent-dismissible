@@ -4,9 +4,9 @@ A class for encapsulating the logic required to maintain a relationship between 
 
 Think of this like a WordPress Transient, but without in-memory cache support, and that uses the `wp_usermeta` database table instead of `wp_options`.
 
-We invented this class to centralize and minimize the code required to execute multiple different calls and checks to the User Meta and User Options APIs inside of WordPress Core.
+We invented this utility to centralize and minimize the code required to execute multiple different calls and checks to the User Meta and User Options APIs inside of WordPress Core.
 
-We use this as the API to check if we should show persistent admin-area notices to logged-in WordPress users. Dismissals can be set to expire after some number of seconds. They are global by default in a multisite environment, but can be per-site. Custom values can be saved if necessary.
+We use this as the engine to power if and when we should show persistent admin-area notices to logged-in WordPress users. Dismissals can be set to expire after some number of seconds. They are global by default in a multisite environment, but can be per-site. Custom values can be saved if necessary.
 
 ## Setup
 
