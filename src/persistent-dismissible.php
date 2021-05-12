@@ -22,7 +22,7 @@ if ( ! class_exists( 'Persistent_Dismissible' ) ) :
  * user's desire to dismiss that UI element.
  *
  * Think of this like a WordPress Transient, but without in-memory cache support
- * and that uses the `wp_usermeta` database table instead.
+ * and that uses the `wp_usermeta` database table instead of `wp_options`.
  *
  * @version 1.0.0
  */
