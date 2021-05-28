@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * This class_exists() check avoids a fatal error if this class exists in more
  * than one included plugin/theme, and should not be removed.
  */
-if ( ! class_exists( 'Persistent_Dismissible' ) ) :
+if ( ! class_exists( 'Sandhills\Utils\Persistent_Dismissible' ) ) :
 
 /**
  * Class for encapsulating the logic required to maintain a relationship between
