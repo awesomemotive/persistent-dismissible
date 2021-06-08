@@ -1,0 +1,13 @@
+{
+    "name": "sandhillsdevelopment/persistent-dismissible",
+    "description": "Utility PHP class to simplify interacting with persistent dismissible WordPress notices, promos, and banners.",
+    "keywords": ["wordpress", "notices"],
+    "homepage": "https://sandhillsdev.com",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "John James Jacoby",
+            "homepage": "https://jjj.blog/"
+        }
+    ]
+}
